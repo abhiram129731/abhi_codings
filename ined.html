@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>abhicodings | Scalable Software, AI & Web Architecture</title>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              400: '#60a5fa',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+            },
+            accent: {
+              400: '#38bdf8',
+              500: '#06b6d4',
+            }
+          },
+          animation: {
+            'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Subtle dot grid pattern */
+    .bg-grid-pattern {
+      background-size: 32px 32px;
+      background-image: 
+        radial-gradient(circle, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    }
+    /* Glow highlights */
+    .glow-effect {
+      box-shadow: 0 0 50px -10px rgba(59, 130, 246, 0.25);
+    }
+    .glow-card:hover {
+      box-shadow: 0 10px 30px -10px rgba(56, 189, 248, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-brand-500 selection:text-white min-h-screen flex flex-col relative overflow-x-hidden">
+
+  <!-- Background Ambience & Grid -->
+  <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
+  <div class="fixed top-[-15%] left-[20%] w-[500px] h-[500px] bg-brand-600/15 rounded-full blur-[120px] pointer-events-none z-0 animate-pulse-slow"></div>
+  <div class="fixed bottom-[-10%] right-[10%] w-[600px] h-[600px] bg-accent-500/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/80 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-2.5 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-accent-400 p-[1.5px] transition-transform duration-300 group-hover:scale-105">
+          <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+            <i data-lucide="terminal" class="w-5 h-5 text-accent-400 group-hover:text-brand-400 transition-colors"></i>
+          </div>
+        </div>
+        <div class="flex items-baseline font-mono text-xl font-bold tracking-tight">
+          <span class="text-white">abhi</span><span class="text-brand-400">codings</span>
+          <span class="w-2 h-2 rounded-full bg-accent-400 ml-0.5 animate-pulse"></span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+        <a href="#services" class="hover:text-white transition-colors">Services</a>
+        <a href="#projects" class="hover:text-white transition-colors">Projects</a>
+        <a href="#tech-stack" class="hover:text-white transition-colors">Tech Stack</a>
+        <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+      </nav>
+
+      <!-- CTA Button -->
+      <div class="hidden sm:flex items-center gap-4">
+        <a href="#contact" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-500 hover:to-accent-400 transition-all duration-200 shadow-md shadow-brand-500/20 hover:shadow-brand-500/35">
+          <span>Get in Touch</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+
+      <!-- Mobile Menu Toggle Button -->
+      <button id="mobileMenuBtn" aria-label="Toggle navigation menu" class="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 border border-slate-800">
+        <i data-lucide="menu" id="menuIcon" class="w-6 h-6"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobileMenu" class="hidden md:hidden border-b border-slate-800 bg-slate-950/95 px-6 py-6 space-y-4">
+      <a href="#services" class="mobile-link block text-base text-slate-300 hover:text-white py-1">Services</a>
+      <a href="#projects" class="mobile-link block text-base text-slate-300 hover:text-white py-1">Projects</a>
+      <a href="#tech-stack" class="mobile-link block text-base text-slate-300 hover:text-white py-1">Tech Stack</a>
+      <a href="#contact" class="mobile-link block text-base text-slate-300 hover:text-white py-1">Contact</a>
+      <div class="pt-2">
+        <a href="#contact" class="mobile-link flex items-center justify-center gap-2 w-full py-3 rounded-lg text-sm font-semibold text-white bg-brand-600 hover:bg-brand-500">
+          Get in Touch
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow z-10">
+    <!-- Hero Section -->
+    <section class="relative pt-16 pb-24 md:pt-28 md:pb-36 overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <!-- Status Badge -->
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-slate-800 bg-slate-900/60 backdrop-blur text-xs sm:text-sm font-mono text-slate-300 mb-8">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>Available for New Projects & Consultations</span>
+        </div>
+
+        <!-- Main Hero Title -->
+        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6">
+          Welcome to <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-accent-400 to-indigo-400">abhicodings</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="max-w-3xl mx-auto text-lg sm:text-xl text-slate-400 leading-relaxed font-normal mb-10">
+          Crafting Scalable Code, AI Solutions & Web Architecture. We build high-performance web products, automate enterprise workflows, and engineer future-proof cloud backends.
+        </p>
+
+        <!-- CTA Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+          <a href="#services" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-white bg-brand-600 hover:bg-brand-500 transition-all duration-200 shadow-lg shadow-brand-600/25">
+            <i data-lucide="layers" class="w-4 h-4"></i>
+            <span>Explore Services</span>
+          </a>
+          <a href="#contact" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-slate-300 bg-slate-900/90 border border-slate-800 hover:bg-slate-800 hover:text-white transition-all duration-200">
+            <i data-lucide="message-square" class="w-4 h-4"></i>
+            <span>Contact Us</span>
+          </a>
+        </div>
+
+        <!-- Interactive Terminal Preview Box -->
+        <div class="max-w-3xl mx-auto rounded-2xl bg-slate-900/90 border border-slate-800 p-4 sm:p-6 text-left font-mono text-xs sm:text-sm shadow-2xl relative glow-effect">
+          <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-800/80 text-slate-500 text-xs">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+              <span class="ml-2 text-slate-400">abhicodings-core ~ v2.4.0</span>
+            </div>
+            <span class="flex items-center gap-1"><i data-lucide="cpu" class="w-3.5 h-3.5"></i> node.production</span>
+          </div>
+          <div class="space-y-1.5 leading-relaxed text-slate-300">
+            <p><span class="text-accent-400">$</span> init-project <span class="text-amber-300">--client="abhicodings"</span> --scalable=true</p>
+            <p class="text-emerald-400">✔ Initialized high-concurrency microservices stack...</p>
+            <p class="text-emerald-400">✔ Integrated fine-tuned AI inference pipeline & neural agents...</p>
+            <p class="text-slate-400">// Ready to accelerate your software roadmap seamlessly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 border-t border-slate-800/60 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <span class="text-brand-400 font-mono text-sm uppercase tracking-wider font-semibold">Specialized Capabilities</span>
+          <h2 class="text-3xl sm:text-4xl font-bold text-white mt-2">Engineered for Performance & Scale</h2>
+          <p class="text-slate-400 mt-4">From robust web apps to generative AI agents, discover full-lifecycle technical engineering designed for real impact.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Card 1 -->
+          <div class="p-6 rounded-2xl bg-slate-900/40 border border-slate-800 hover:border-slate-700 transition-all duration-300 glow-card flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 text-brand-400 flex items-center justify-center mb-5">
+                <i data-lucide="layout" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-lg font-bold text-white mb-2">Modern Web Apps</h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                Interactive, fast web experiences with React, Next.js, and Tailwind with high Lighthouse scores and top UX.
+              </p>
+            </div>
+            <div class="text-xs font-mono text-brand-400 font-medium">React • Next.js • TypeScript</div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="p-6 rounded-2xl bg-slate-900/40 border border-slate-800 hover:border-slate-700 transition-all duration-300 glow-card flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-accent-500/10 border border-accent-500/20 text-accent-400 flex items-center justify-center mb-5">
+                <i data-lucide="brain-circuit" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-lg font-bold text-white mb-2">AI/ML & Automation</h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                LLM integrations, RAG pipelines, intelligent data workflows, and automated bots that save hundreds of engineering hours.
+              </p>
+            </div>
+            <div class="text-xs font-mono text-accent-400 font-medium">LangChain • Llama • OpenAI API</div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="p-6 rounded-2xl bg-slate-900/40 border border-slate-800 hover:border-slate-700 transition-all duration-300 glow-card flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center mb-5">
+                <i data-lucide="database" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-lg font-bold text-white mb-2">Cloud & Databases</h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                Microservice architectures, Postgres query optimization, Docker containerization, and automated CI/CD pipelines.
+              </p>
+            </div>
+            <div class="text-xs font-mono text-indigo-400 font-medium">Docker • AWS • PostgreSQL</div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="p-6 rounded-2xl bg-slate-900/40 border border-slate-800 hover:border-slate-700 transition-all duration-300 glow-card flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mb-5">
+                <i data-lucide="code-2" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-lg font-bold text-white mb-2">DSA & Tech Mentoring</h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                High-level code reviews, complex algorithmic optimization, and strategic software design consultations.
+              </p>
+            </div>
+            <div class="text-xs font-mono text-emerald-400 font-medium">DSA • System Design • Mentoring</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech Stack Row -->
+    <section id="tech-stack" class="py-14 border-y border-slate-800/80 bg-slate-900/30">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-center text-xs font-mono tracking-widest text-slate-500 uppercase mb-8">
+          Battle-Tested Technologies & Frameworks
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+          <span class="px-4 py-2 rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2">
+            <i data-lucide="file-code" class="w-4 h-4 text-yellow-400"></i> Python & Django
+          </span>
+          <span class="px-4 py-2 rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2">
+            <i data-lucide="atom" class="w-4 h-4 text-cyan-400"></i> Next.js & React
+          </span>
+          <span class="px-4 py-2 rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2">
+            <i data-lucide="database" class="w-4 h-4 text-blue-400"></i> PostgreSQL
+          </span>
+          <span class="px-4 py-2 rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2">
+            <i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i> AI & LLMs
+          </span>
+          <span class="px-4 py-2 rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2">
+            <i data-lucide="container" class="w-4 h-4 text-sky-400"></i> Docker & K8s
+          </span>
+          <span class="px-4 py-2 rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-200 text-xs sm:text-sm font-medium flex items-center gap-2">
+            <i data-lucide="cloud" class="w-4 h-4 text-amber-400"></i> AWS Cloud
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Projects Section -->
+    <section id="projects" class="py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
+          <div>
+            <span class="text-accent-400 font-mono text-sm uppercase tracking-wider font-semibold">Portfolio Showcase</span>
+            <h2 class="text-3xl sm:text-4xl font-bold text-white mt-2">Featured Engineering Works</h2>
+          </div>
+          <p class="text-slate-400 text-sm max-w-md">
+            A glance at scalable applications and intelligent platforms architected by the abhicodings team.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Project 1 -->
+          <div class="group rounded-2xl bg-slate-900/50 border border-slate-800 overflow-hidden hover:border-slate-700 transition duration-300 flex flex-col">
+            <div class="h-48 bg-gradient-to-br from-blue-900/30 to-indigo-900/30 p-6 flex flex-col justify-between border-b border-slate-800/80">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-brand-500/20 text-brand-300 border border-brand-500/30 self-start">SaaS Platform</span>
+              <i data-lucide="globe" class="w-10 h-10 text-brand-400 group-hover:scale-110 transition duration-300"></i>
+            </div>
+            <div class="p-6 flex-grow flex flex-col justify-between">
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-brand-400 transition-colors">OmniScale Analytics</h3>
+                <p class="text-slate-400 text-sm mb-4">Real-time distributed telemetry dashboard handling high-throughput event processing and reporting.</p>
+              </div>
+              <div class="flex items-center justify-between pt-4 border-t border-slate-800/80">
+                <div class="flex gap-2">
+                  <span class="text-[11px] font-mono text-slate-400 bg-slate-800 px-2 py-0.5 rounded">Next.js</span>
+                  <span class="text-[11px] font-mono text-slate-400 bg-slate-800 px-2 py-0.5 rounded">FastAPI</span>
+                </div>
+                <a href="#contact" class="text-slate-300 hover:text-white inline-flex items-center gap-1 text-sm font-medium">
+                  Details <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 2 -->
+          <div class="group rounded-2xl bg-slate-900/50 border border-slate-800 overflow-hidden hover:border-slate-700 transition duration-300 flex flex-col">
+            <div class="h-48 bg-gradient-to-br from-cyan-900/30 to-teal-900/30 p-6 flex flex-col justify-between border-b border-slate-800/80">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-accent-500/20 text-accent-300 border border-accent-500/30 self-start">AI / LLM System</span>
+              <i data-lucide="bot" class="w-10 h-10 text-accent-400 group-hover:scale-110 transition duration-300"></i>
+            </div>
+            <div class="p-6 flex-grow flex flex-col justify-between">
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-accent-400 transition-colors">NeuralAgent Knowledge Hub</h3>
+                <p class="text-slate-400 text-sm mb-4">Enterprise conversational RAG pipeline integrating internal documentation with semantic vector search.</p>
+              </div>
+              <div class="flex items-center justify-between pt-4 border-t border-slate-800/80">
+                <div class="flex gap-2">
+                  <span class="text-[11px] font-mono text-slate-400 bg-slate-800 px-2 py-0.5 rounded">Python</span>
+                  <span class="text-[11px] font-mono text-slate-400 bg-slate-800 px-2 py-0.5 rounded">ChromaDB</span>
+                </div>
+                <a href="#contact" class="text-slate-300 hover:text-white inline-flex items-center gap-1 text-sm font-medium">
+                  Details <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 3 -->
+          <div class="group rounded-2xl bg-slate-900/50 border border-slate-800 overflow-hidden hover:border-slate-700 transition duration-300 flex flex-col">
+            <div class="h-48 bg-gradient-to-br from-purple-900/30 to-slate-900/30 p-6 flex flex-col justify-between border-b border-slate-800/80">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30 self-start">Infrastructure</span>
+              <i data-lucide="server" class="w-10 h-10 text-purple-400 group-hover:scale-110 transition duration-300"></i>
+            </div>
+            <div class="p-6 flex-grow flex flex-col justify-between">
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">CloudSync Gateway</h3>
+                <p class="text-slate-400 text-sm mb-4">Low-latency API gateway with automatic failover, edge caching, and token-bucket rate limiting.</p>
+              </div>
+              <div class="flex items-center justify-between pt-4 border-t border-slate-800/80">
+                <div class="flex gap-2">
+                  <span class="text-[11px] font-mono text-slate-400 bg-slate-800 px-2 py-0.5 rounded">Go</span>
+                  <span class="text-[11px] font-mono text-slate-400 bg-slate-800 px-2 py-0.5 rounded">Redis</span>
+                </div>
+                <a href="#contact" class="text-slate-300 hover:text-white inline-flex items-center gap-1 text-sm font-medium">
+                  Details <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact & Consultation Section -->
+    <section id="contact" class="py-20 border-t border-slate-800/80 bg-slate-900/20">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-b from-slate-900 to-slate-950 p-8 sm:p-12 rounded-3xl border border-slate-800 shadow-2xl relative glow-effect">
+          <div class="text-center mb-10">
+            <span class="text-brand-400 font-mono text-xs uppercase tracking-widest font-semibold">Start A Conversation</span>
+            <h2 class="text-3xl font-extrabold text-white mt-2">Let’s Build Something Exceptional</h2>
+            <p class="text-slate-400 text-sm mt-3">Ready to bring your next product or architectural challenge to life? Send a message.</p>
+          </div>
+
+          <form id="contactForm" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="name" class="block text-xs font-mono text-slate-400 mb-1">Your Name</label>
+                <input type="text" id="name" required placeholder="Alex Turner" class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-600 focus:outline-none focus:border-brand-500 text-sm transition">
+              </div>
+              <div>
+                <label for="email" class="block text-xs font-mono text-slate-400 mb-1">Email Address</label>
+                <input type="email" id="email" required placeholder="alex@company.com" class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-600 focus:outline-none focus:border-brand-500 text-sm transition">
+              </div>
+            </div>
+            <div>
+              <label for="message" class="block text-xs font-mono text-slate-400 mb-1">Project Details</label>
+              <textarea id="message" rows="4" required placeholder="Describe your goals, requirements, or vision..." class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-600 focus:outline-none focus:border-brand-500 text-sm transition resize-none"></textarea>
+            </div>
+            <button type="submit" class="w-full py-3.5 rounded-xl text-sm font-semibold text-white bg-brand-600 hover:bg-brand-500 transition-all duration-200 shadow-lg shadow-brand-600/30 flex items-center justify-center gap-2">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>Send Message</span>
+            </button>
+          </form>
+
+          <!-- Success Alert Message Box (Hidden by default) -->
+          <div id="formSuccess" class="hidden mt-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-center text-sm font-medium">
+            Thank you! Your message has been received. The abhicodings team will respond shortly.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800 bg-slate-950 z-10 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-lg bg-brand-600/20 border border-brand-500/30 flex items-center justify-center">
+          <i data-lucide="code" class="w-4 h-4 text-brand-400"></i>
+        </div>
+        <span class="font-mono text-sm font-bold text-white">abhicodings</span>
+      </div>
+
+      <p class="text-xs text-slate-500 font-mono text-center">
+        &copy; <span id="currentYear"></span> abhicodings. All rights reserved. Built with precision.
+      </p>
+
+      <div class="flex items-center gap-4 text-slate-400">
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="hover:text-white transition">
+          <i data-lucide="github" class="w-5 h-5"></i>
+        </a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="hover:text-white transition">
+          <i data-lucide="linkedin" class="w-5 h-5"></i>
+        </a>
+        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter" class="hover:text-white transition">
+          <i data-lucide="twitter" class="w-5 h-5"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Set dynamic current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Responsive Mobile Menu Handler
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+
+    // Contact Form Submission Handler
+    const contactForm = document.getElementById('contactForm');
+    const formSuccess = document.getElementById('formSuccess');
+
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      contactForm.reset();
+      formSuccess.classList.remove('hidden');
+      setTimeout(() => {
+        formSuccess.classList.add('hidden');
+      }, 5000);
+    });
+  </script>
+</body>
+</html>
